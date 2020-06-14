@@ -4,7 +4,7 @@
     <el-container>
       <el-header></el-header>
       <el-main v-loading="loading">
-        <el-timeline reverse="true">
+        <el-timeline>
           <el-timeline-item
             :timestamp="item.createTime"
             placement="top"
