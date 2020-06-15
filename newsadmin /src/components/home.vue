@@ -87,10 +87,10 @@ export default {
         "103": "el-icon-connection",
         "101": "el-icon-present",
         "102": "el-icon-bank-card",
-        "145": "el-icon-reading"
+        "145": "el-icon-reading",
       },
-      isCollapse: false
-    };
+      isCollapse: false,
+    }
   },
   //监听属性 类似于data概念
   computed: {},
@@ -99,12 +99,12 @@ export default {
   //方法集合
   methods: {
     logout() {
-      localStorage.clear();
-      this.$router.replace("/index");
+      localStorage.clear()
+      this.$router.replace("/index")
     },
     handleToggle() {
-      this.isCollapse = !this.isCollapse;
-    }
+      this.isCollapse = !this.isCollapse
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -116,8 +116,8 @@ export default {
   updated() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
-};
+  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+}
 </script>
 <style scoped>
 /* @import url(); 引入公共css类 */

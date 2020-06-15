@@ -165,7 +165,7 @@ export default {
     return {
       loading: false,
       filterList: [],
-      limit: 10,
+      limit: 15,
       total: null,
       page: 1,
       searchData: "",
@@ -352,12 +352,10 @@ export default {
       this.total = list.length;
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
       this.limit = val;
       this.getFilterList();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.page = val;
       this.getFilterList();
     },

@@ -28,16 +28,39 @@
         </el-col>
       </el-row>
       <!-- 主体列表 -->
-      <el-table :data="filterList" border stripe size="mini" v-loading="loading">
+      <el-table
+        :data="filterList"
+        border
+        stripe
+        size="mini"
+        v-loading="loading"
+      >
         <el-table-column type="index" label="序号" align="center">
           <template v-slot="scope">
-            <span>{{(page - 1) * limit + scope.$index + 1}}</span>
+            <span>{{ (page - 1) * limit + scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="新闻标题" prop="title" width="350" align="center"></el-table-column>
-        <el-table-column label="评论用户" prop="userName" align="center"></el-table-column>
-        <el-table-column label="评论内容" prop="content" align="center"></el-table-column>
-        <el-table-column label="评论时间" prop="createTime" align="center"></el-table-column>
+        <el-table-column
+          label="新闻标题"
+          prop="title"
+          width="350"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="评论用户"
+          prop="userName"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="评论内容"
+          prop="content"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="评论时间"
+          prop="createTime"
+          align="center"
+        ></el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template v-slot="scope">
             <el-button
@@ -61,15 +84,26 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page"
-        :page-sizes="[5, 10,15, 20]"
+        :page-sizes="[5, 10, 15, 20]"
         :page-size="limit"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      >></el-pagination>
+        >></el-pagination
+      >
     </el-card>
     <!-- 弹出表单-编辑 -->
-    <el-dialog title="编辑评论" :visible.sync="editDialogVisible" width="35%" @close="editDialogClosed">
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+    <el-dialog
+      title="编辑评论"
+      :visible.sync="editDialogVisible"
+      width="35%"
+      @close="editDialogClosed"
+    >
+      <el-form
+        :model="editForm"
+        :rules="editFormRules"
+        ref="editFormRef"
+        label-width="100px"
+      >
         <el-form-item label="新闻标题" prop="title">
           <el-input v-model="editForm.title" disabled></el-input>
         </el-form-item>
@@ -100,7 +134,7 @@ export default {
     return {
       loading: false,
       filterList: [],
-      limit: 10,
+      limit: 20,
       total: null,
       page: 1,
       searchData: "",
@@ -112,11 +146,11 @@ export default {
           {
             required: true,
             message: "请输入评论内容",
-            trigger: "blur"
-          }
-        ]
-      }
-    };
+            trigger: "blur",
+          },
+        ],
+      },
+    }
   },
   //监听属性 类似于data概念
   computed: {},
@@ -128,95 +162,95 @@ export default {
       this.loading = true;
       this.$http
         .get("/admin/comments")
-        .then(res => {
-          this.commentList = res.data.data;
-          this.getFilterList();
-          this.loading = false;
+        .then((res) => {
+          this.commentList = res.data.data
+          this.getFilterList()
+          this.loading = false
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch((error) => {
+          console.log(error)
+        })
     },
     showEditDialog(id) {
-      this.editDialogVisible = true;
+      this.editDialogVisible = true
       this.$http
         .get("/admin/comments/" + id)
-        .then(res => {
-          this.editForm = res.data.data;
-          console.log(id);
+        .then((res) => {
+          this.editForm = res.data.data
+          console.log(id)
         })
-        .catch(error => {
-          return error;
-        });
+        .catch((error) => {
+          return error
+        })
     },
     editComment() {
-      this.$refs.editFormRef.validate(valid => {
-        if (!valid) return;
+      this.$refs.editFormRef.validate((valid) => {
+        if (!valid) return
         this.$http
           .put("admin/comments", this.editForm)
           .then(() => {
-            this.$message.success("编辑评论成功");
-            this.editDialogVisible = false;
-            this.getCommentList();
+            this.$message.success("编辑评论成功")
+            this.editDialogVisible = false
+            this.getCommentList()
           })
           .catch(() => {
-            this.$message.error("编辑评论失败");
-          });
-      });
+            this.$message.error("编辑评论失败")
+          })
+      })
     },
     removeCommentsById(id) {
       this.$confirm("此操作将永久删除该条评论, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.$http
             .delete("/admin/comments/" + id)
             .then(() => {
-              this.$message.success("删除评论成功");
-              this.getCommentList();
+              this.$message.success("删除评论成功")
+              this.getCommentList()
             })
             .catch(() => {
-              this.$message.error("删除评论失败");
-            });
+              this.$message.error("删除评论失败")
+            })
         })
-        .catch(error => {
-          return error;
-        });
+        .catch((error) => {
+          return error
+        })
     },
     getFilterList() {
       //  es6过滤得到满足搜索条件的展示数据list
       //过滤分页
       let list = this.commentList.filter((item, index) =>
         item.title.toLowerCase().includes(this.searchData.toLowerCase())
-      );
+      )
       this.filterList = list.filter(
         (item, index) =>
           index < this.page * this.limit &&
           index >= this.limit * (this.page - 1)
-      );
-      this.total = list.length;
+      )
+      this.total = list.length
     },
     handleSizeChange(val) {
-      this.limit = val;
-      this.getFilterList();
+      this.limit = val
+      this.getFilterList()
     },
     handleCurrentChange(val) {
-      this.page = val;
-      this.getFilterList();
+      this.page = val
+      this.getFilterList()
     },
     search() {
-      this.page = 1;
-      this.getFilterList();
+      this.page = 1
+      this.getFilterList()
     },
     editDialogClosed() {
-      this.$refs.editFormRef.resetFields();
-    }
+      this.$refs.editFormRef.resetFields()
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.getCommentList();
+    this.getCommentList()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -227,9 +261,9 @@ export default {
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
   activated() {
-    this.getCommentList();
-  } //如果页面有keep-alive缓存功能，这个函数会触发
-};
+    this.getCommentList()
+  }, //如果页面有keep-alive缓存功能，这个函数会触发
+}
 </script>
 <style scoped>
 /* @import url(); 引入公共css类 */

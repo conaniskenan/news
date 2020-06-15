@@ -6,9 +6,19 @@
       <div class="logo">
         <img src="../assets/logo.png" alt />
       </div>
-      <el-form :model="formData" :rules="rules" ref="form" label-width class="login_form">
+      <el-form
+        :model="formData"
+        :rules="rules"
+        ref="form"
+        label-width
+        class="login_form"
+      >
         <el-form-item label prop="username">
-          <el-input v-model="formData.username" placeholder="用户名" prefix-icon="el-icon-user"></el-input>
+          <el-input
+            v-model="formData.username"
+            placeholder="用户名"
+            prefix-icon="el-icon-user"
+          ></el-input>
         </el-form-item>
         <el-form-item label prop="password">
           <el-input
@@ -39,10 +49,7 @@ export default {
     //这里存放数据
     return {
       loading: false,
-      formData: {
-        username: "",
-        password: ""
-      },
+      formData: {},
       rules: {
         username: [
           { required: true, message: "用户名", trigger: "blur" },
@@ -50,8 +57,8 @@ export default {
             min: 3,
             max: 10,
             message: "长度在 3 到 10 个字符",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         password: [
           { required: true, message: "密码", trigger: "blur" },
@@ -59,11 +66,11 @@ export default {
             min: 6,
             max: 15,
             message: "长度在 6 到 15 个字符",
-            trigger: "blur"
-          }
-        ]
-      }
-    };
+            trigger: "blur",
+          },
+        ],
+      },
+    }
   },
   //监听属性 类似于data概念
   computed: {},
@@ -72,34 +79,34 @@ export default {
   //方法集合
   methods: {
     handleReset() {
-      this.$refs.form.resetFields();
+      this.$refs.form.resetFields()
     },
     onSubmit() {
-      this.$refs.form.validate(valid => {
-        if (!valid) return;
-        this.loading = true;
+      this.$refs.form.validate((valid) => {
+        if (!valid) return
+        this.loading = true
         this.$http
           .post("/token", this.formData)
-          .then(res => {
+          .then((res) => {
             if (res.data.code !== 200) {
               setTimeout(() => {
-                this.loading = false;
-                this.$message.error("用户名或密码错误");
-                return;
-              }, 1000);
+                this.loading = false
+                this.$message.error("用户名或密码错误")
+                return
+              }, 1000)
             } else {
-              const data = res.data.data;
-              localStorage.setItem("token", data);
+              const data = res.data.data
+              localStorage.setItem("token", data)
               setTimeout(() => {
-                this.loading = false;
-                this.$router.push("/home");
-                this.$message.success("登陆成功");
-              }, 1000);
+                this.loading = false
+                this.$router.push("/home")
+                this.$message.success("登陆成功")
+              }, 1000)
             }
           })
-          .catch(() => {});
-      });
-    }
+          .catch(() => {})
+      })
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
@@ -111,8 +118,8 @@ export default {
   updated() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
-};
+  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+}
 </script>
 <style scoped>
 /* @import url(); 引入公共css类 */

@@ -28,15 +28,43 @@
         </el-col>
       </el-row>
       <!-- 主体列表 -->
-      <el-table :data="filterList" border stripe size="mini" v-loading="loading">
-        <el-table-column type="index" label="序号" align="center" width="250">
+      <el-table
+        :data="filterList"
+        border
+        stripe
+        size="mini"
+        v-loading="loading"
+      >
+        <el-table-column type="index" label="序号" align="center" width="150">
           <template v-slot="scope">
-            <span>{{(page - 1) * limit + scope.$index + 1}}</span>
+            <span>{{ (page - 1) * limit + scope.$index + 1 }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="用户名" prop="username" width="350" align="center"></el-table-column>
-        <el-table-column label="密码" prop="password" align="center"></el-table-column>
-        <el-table-column label="注册时间" prop="createtime" align="center"></el-table-column>
+        <el-table-column
+          label="用户名"
+          prop="username"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="密码"
+          prop="password"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="手机号"
+          prop="phone"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="邮箱"
+          prop="email"
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          label="注册时间"
+          prop="createtime"
+          align="center"
+        ></el-table-column>
       </el-table>
       <!-- 分页 -->
       <el-pagination
@@ -44,11 +72,12 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page"
-        :page-sizes="[1, 2,5, 10]"
+        :page-sizes="[5, 10, 15, 20]"
         :page-size="limit"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      >></el-pagination>
+        >></el-pagination
+      >
     </el-card>
   </div>
 </template>
@@ -64,12 +93,12 @@ export default {
       filterList: [],
       filterLists: [],
       data: [],
-      limit: 10,
+      limit: 15,
       total: null,
       page: 1,
       searchData: "",
-      userList: []
-    };
+      userList: [],
+    }
   },
   //监听属性 类似于data概念
   computed: {},
@@ -78,48 +107,48 @@ export default {
   //方法集合
   methods: {
     getUserList() {
-      this.loading = true;
+      this.loading = true
       this.$http
         .get("/admin/users")
-        .then(res => {
-          this.userList = res.data.data;
-          this.getFilterList();
-          this.loading = false;
+        .then((res) => {
+          this.userList = res.data.data
+          this.getFilterList()
+          this.loading = false
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch((error) => {
+          console.log(error)
+        })
     },
     getFilterList() {
       //  es6过滤得到满足搜索条件的展示数据list
       this.filterLists = this.userList.filter((item, index) =>
         item.username.toLowerCase().includes(this.searchData.toLowerCase())
-      );
+      )
       //过滤分页
       this.filterList = this.filterLists.filter(
         (item, index) =>
           index < this.page * this.limit &&
           index >= this.limit * (this.page - 1)
-      );
+      )
       //分页的总数据
-      this.total = this.filterLists.length;
+      this.total = this.filterLists.length
     },
     handleSizeChange(val) {
-      this.limit = val;
-      this.getFilterList();
+      this.limit = val
+      this.getFilterList()
     },
     handleCurrentChange(val) {
-      this.page = val;
-      this.getFilterList();
+      this.page = val
+      this.getFilterList()
     },
     search() {
-      this.page = 1;
-      this.getFilterList();
-    }
+      this.page = 1
+      this.getFilterList()
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.getUserList();
+    this.getUserList()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -130,9 +159,9 @@ export default {
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
   activated() {
-    this.getUserList();
-  } //如果页面有keep-alive缓存功能，这个函数会触发
-};
+    this.getUserList()
+  }, //如果页面有keep-alive缓存功能，这个函数会触发
+}
 </script>
 <style scoped>
 /* @import url(); 引入公共css类 */
