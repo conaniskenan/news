@@ -18,7 +18,7 @@
         <el-form-item label prop="content">
           <el-input
             type="textarea"
-            :autosize="{ minRows: 5 }"
+            :autosize="{ minRows: 7 }"
             placeholder="说两句吧。。。"
             v-model="form.content"
             prop="comment"
@@ -213,7 +213,7 @@ body {
 }
 .input {
   width: 700px;
-  height: 200px;
+  height: 260px;
   margin: 0 auto;
 }
 .btn {
