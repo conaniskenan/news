@@ -11,7 +11,7 @@ const routes = [
     redirect: "/news",
   },
   {
-    path: "/news/:toLogin?",
+    path: "/news",
     name:"News",
     component: News,
   },

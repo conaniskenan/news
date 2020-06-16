@@ -8,6 +8,7 @@
         <span class="time">{{ currentNews.createTime }}</span>
         <span class="author">来源: {{ currentNews.author }}</span>
         <span class="category">分类: {{ currentNews.category }}</span>
+        <span class="viewCount">浏览量: {{ currentNews.viewCount }}</span>
       </div>
       <el-divider></el-divider>
       <div class="news" v-html="currentNews.content"></div>
@@ -21,18 +22,13 @@
             placeholder="说两句吧。。。"
             v-model="form.content"
             prop="comment"
-          >
-          </el-input>
+          ></el-input>
         </el-form-item>
       </el-form>
 
       <div class="btn">
-        <el-button type="primary" v-if="isLogin" @click="toComment"
-          >发布</el-button
-        >
-        <el-button type="primary" v-else @click="toLogin"
-          >登录后发表评论</el-button
-        >
+        <el-button type="primary" v-if="isLogin" @click="toComment">发布</el-button>
+        <el-button type="primary" v-else @click="toLogin">登录后发表评论</el-button>
       </div>
     </div>
 
@@ -56,13 +52,13 @@ export default {
   data() {
     //这里存放数据
     var checkContent = (rule, value, callback) => {
-      var len = value.length
+      var len = value.length;
       if (len == 0) {
-        callback(new Error("评论不能为空"))
+        callback(new Error("评论不能为空"));
       } else {
-        return callback()
+        return callback();
       }
-    }
+    };
     return {
       currentNews: {},
       currentComments: {},
@@ -73,11 +69,11 @@ export default {
         content: [
           {
             validator: checkContent,
-            trigger: "blur",
-          },
-        ],
-      },
-    }
+            trigger: "blur"
+          }
+        ]
+      }
+    };
   },
   //监听属性 类似于data概念
   computed: {},
@@ -88,72 +84,72 @@ export default {
   //方法集合
   methods: {
     getCurrentNews() {
-      this.loading = true
-      this.currentNews = ""
+      this.loading = true;
+      this.currentNews = "";
       this.$http
         .get("/user/news/" + this.$route.params.id)
-        .then((res) => {
-          this.currentNews = res.data.data
-          this.loading = false
+        .then(res => {
+          this.currentNews = res.data.data;
+          this.loading = false;
         })
-        .catch((error) => {
-          console.log(error)
-        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     goBack() {
-      this.$router.push("/news")
+      this.$router.push("/news");
     },
     getCurrentComments() {
       this.$http
         .get("/user/" + this.$route.params.id)
-        .then((res) => {
-          this.currentComments = res.data.data
+        .then(res => {
+          this.currentComments = res.data.data;
+          console.log(this.currentComments);
         })
-        .catch((error) => {
-          console.log(error)
-        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     toComment() {
       this.$http
         .post("/user/comments", this.form)
-        .then((res) => {
+        .then(res => {
           if (res.data.code !== 201) {
             setTimeout(() => {
-              this.$message.error("发布评论失败")
-            }, 1000)
+              this.$message.error("发布评论失败");
+            }, 1000);
           } else {
             setTimeout(() => {
-              this.$refs.commentForm.resetFields()
-              this.getCurrentNews()
-              this.getCurrentComments()
-              this.$message.success("发表评论成功")
-            }, 1000)
+              this.$refs.commentForm.resetFields();
+              this.getCurrentNews();
+              this.getCurrentComments();
+              this.$message.success("发表评论成功");
+            }, 1000);
           }
         })
-        .catch(() => {})
+        .catch(() => {});
     },
     toLogin() {
       this.$router.push({
         path: "/news",
-        name: "News",
-        params: {
-          toLogin: true,
-        },
-      })
+        query: {
+          login: false
+        }
+      });
     },
     checkIsLogin() {
       if (localStorage.token) {
-        this.isLogin = true
+        this.isLogin = true;
       } else {
-        this.isLogin = false
+        this.isLogin = false;
       }
-    },
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.getCurrentComments()
-    this.checkIsLogin()
-    this.getCurrentNews()
+    this.getCurrentComments();
+    this.checkIsLogin();
+    this.getCurrentNews();
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -163,8 +159,8 @@ export default {
   updated() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
-}
+  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+};
 </script>
 <style scoped>
 /* @import url(); 引入公共css类 */
@@ -205,6 +201,9 @@ body {
 .author {
   margin-right: 10px;
 }
+.category {
+  margin-right: 10px;
+}
 .news {
   font-size: 18px;
 }
@@ -241,7 +240,6 @@ body {
 }
 .commentTime {
   margin-left: 20px;
-
   font-size: 12px;
   color: #aeaeae;
 }
